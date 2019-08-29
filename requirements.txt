@@ -1,0 +1,8 @@
+chainer==6.2.0
+filelock==3.0.12
+mecab-python3==0.996.2
+numpy==1.17.0
+protobuf==3.7.1
+six==1.12.0
+typing==3.6.6
+typing-extensions==3.6.6
