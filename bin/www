@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('talkcharactor:server');
 var http = require('http');
 var exec = require('child_process').exec;
+var rq = require('request-promise');
 
 /**
  * Get port from environment and store in Express.
@@ -40,16 +41,33 @@ io.on('connection',function(socket){
 
   socket.on('message',function(umsg){
     console.log(umsg);
-    var com = 'python python/generator_commandline.py '+umsg+' -m predictor.npz';
-    exec(com,function (error,stdout,stderr) {
-        if(error !== null){
-          console.log('exec error: '+error);
-          return;
-        }
-        cmsg = stdout
-        io.emit('message',cmsg);
-        console.log(stdout);
+    var options = {
+        method: 'POST',
+        uri: 'http://127.0.0.1:5000/predict',
+        json: {
+            xs: umsg
+        },
+    };
+    rq(options)
+    .then(function (parsedBody) {
+        ys = parsedBody['ys'];
+        io.emit('message',ys);
+        console.log(ys);
+    })
+    .catch(function (err) {
+        console.log('post failed');
+        console.log(err);
     });
+    //var com = 'python python/generator_commandline.py '+umsg+' -m predictor.npz';
+    //exec(com,function (error,stdout,stderr) {
+    //    if(error !== null){
+    //      console.log('exec error: '+error);
+    //      return;
+    //    }
+    //    cmsg = stdout
+    //    io.emit('message',cmsg);
+    //    console.log(stdout);
+    //});
   });
 });
 

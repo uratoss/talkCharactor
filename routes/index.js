@@ -9,6 +9,7 @@ router.get('/',function (req,res,next) {
 
 router.post('/',function (req,res,next) {
     console.log(req.body.xs);
+
     var com = 'python python/generator_commandline.py '+req.body.xs+' -m predictor.npz';
     exec(com,function (error,stdout,stderr) {
         if(error !== null){

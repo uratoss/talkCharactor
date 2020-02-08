@@ -10,6 +10,6 @@ $(function(){
     });
     socketio.on('message',function(msg){
       text = msg.replace('name',myName);
-      $('#messages').prepend($('<li>').text('[SEGA]>> '+text));
+      $('#messages').prepend($('<li>').text('[Roa]>> '+text));
     });
 });
